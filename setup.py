@@ -14,10 +14,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="feishu-sdk",
-    version="1.0.0",
+    version="1.0.1",
     author="liyao",
     author_email="liyao2598330@126.com",
-    description="a Feishu Third-party libraries",
+    description="Feishu Third-party Libraries",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/liyao2598330/feishu-sdk",
@@ -26,6 +26,10 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+    ],
+    install_requires=[
+        'urllib3',
+        'requests'
     ],
     python_requires='>=3.6',
 )
