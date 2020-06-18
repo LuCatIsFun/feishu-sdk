@@ -7,9 +7,5 @@
 @desc:
 '''
 import logging
-import logs
-
-from logs import logger
-
 
 
