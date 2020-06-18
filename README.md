@@ -2,9 +2,22 @@
 
 第三方Feishu库，目前只实现了使用的`机器人`部分功能，后续会看精力继续完善
 
+### 安装
+
+``` python
+pip install feishu-sdk
+```
+
+### 调试
+将日志调到debug级会显示更多信息
+```python
+import feishu
+feishu.set_log_level('debug')
+```
+
 ### 导入
 ``` python
-from feishu.Application import Bot
+from feishu import Bot
 
 bot = Bot(app_id='xxxxxxxxxxxxxxx', app_secret="xxxxxxxxxxxxxxx")
 ```
@@ -13,11 +26,11 @@ bot = Bot(app_id='xxxxxxxxxxxxxxx', app_secret="xxxxxxxxxxxxxxx")
 
 测试的话需要给自己发送消息，我们需要一个飞书的[登录预授权码](https://open.feishu.cn/document/ukTMukTMukTM/ukzN4UjL5cDO14SO3gTN)
 
-注意失效，仅为5分钟
+注意有效期仅为5分钟
 
 你需要在[飞书开放平台](https://open.feishu.cn/) 所测试的机器人 -> 安全设置中 添加一个重定向URL,内容为`https://example.com`
 
-然后下面方法或手动拼接，获取一个地址，类似于`https://open.feishu.cn/open-apis/authen/v1/index?app_id=xxxxxxxxx&redirect_uri=https://example.com&state= `，在浏览器中打开，登录后,从地址栏中拿到预授权码
+使用下面方法或手动拼接，获取一个地址，类似于`https://open.feishu.cn/open-apis/authen/v1/index?app_id=xxxxxxxxx&redirect_uri=https://example.com&state= `，在浏览器中打开，登录后,从地址栏中拿到预授权码
 ``` python
 print(bot.get_authorization_code_by_browser_url())
 ```
@@ -152,7 +165,7 @@ bot.send_user_card_message(user_open_id="ou_b7fd6a20da4e3903bc2324b71232c5ac", *
 
 |参数名|值|说明|
 |----|----|----|
-|image_key|飞书图片的image_key|可增加卡片消息图标，增加正式感。image_key获取方法参考[文档](https://open.feishu.cn/document/ukTMukTMukTM/uEDO04SM4QjLxgDN)|
+|image_key|飞书图片的image_key|可增加卡片消息图标，增进正式感。image_key获取方法参考[文档](https://open.feishu.cn/document/ukTMukTMukTM/uEDO04SM4QjLxgDN)|
 |button_confirm|True/False|button是否需要二次确认|
 |name|str|卡片通知者名称，默认为：**通知**|
 |auto_add_time|True/False|自动增加通知时间，为True时,会在内容自动增加一行|
@@ -172,3 +185,6 @@ bot.send_user_card_message(user_open_id="ou_b7fd6a20da4e3903bc2324b71232c5ac", *
 #返回数据格式
 {'code': 0, 'data': {'message_id': 'om_b3747313d4f46a9e61067461cc24955a'}, 'msg': 'ok'}
 ```
+
+### 其他
+* 建议使用Python3，Python2会去做兼容，但不保证。

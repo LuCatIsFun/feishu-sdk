@@ -6,7 +6,7 @@
 @time: 2020/6/11 6:10 下午
 @desc:
 """
-
+import sys
 import json
 import requests
 
@@ -18,7 +18,7 @@ class FeishuBase:
     retry = 3
 
 
-class Request:
+class Request(FeishuBase):
     BASE_API_SERVER = 'https://open.feishu.cn/open-apis'
 
     def __init__(self, timeout=None, retry=None, **kwargs):
@@ -34,11 +34,11 @@ class Request:
         self.app_access_token = None
         self.tenant_access_token = None
 
-        if retry:
-            self.retry = retry
-            self.adapter = requests.adapters.HTTPAdapter(max_retries=self.retry)
-            self.session.mount("https://", self.adapter)
-            self.session.mount("http://", self.adapter)
+        self.retry = retry if retry else self.retry
+
+        self.adapter = requests.adapters.HTTPAdapter(max_retries=self.retry)
+        self.session.mount("https://", self.adapter)
+        self.session.mount("http://", self.adapter)
 
     def get(self, url, data):
         return self.response(url, data, 'get')
