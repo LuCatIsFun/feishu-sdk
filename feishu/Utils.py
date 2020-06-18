@@ -10,6 +10,7 @@
 import json
 import requests
 
+from .Logs import logger
 from .FeishuException import RequestException
 
 
@@ -55,7 +56,8 @@ class Request:
                                           timeout=self.timeout,
                                           ).json()
         status_code = r.get('code', -1)
+
         if status_code != 0:
             raise RequestException(status=status_code, data=r.get('msg'))
-
+        logger.debug('request url:%s; response:%s' % (url, r))
         return r

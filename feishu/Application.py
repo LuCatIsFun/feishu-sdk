@@ -1,16 +1,17 @@
 # encoding: utf-8
-'''
+"""
 @author: liyao
 @contact: liyao2598330@126.com
 @software: pycharm
 @time: 2020/6/11 6:06 下午
 @desc:
-'''
+"""
 import time
 import urllib3
 
 from datetime import datetime
 
+from .Logs import logger
 from .Utils import FeishuBase, Request
 from .Decorator import tenant_access_token, app_access_token
 
@@ -291,5 +292,5 @@ class Bot(FeishuBase):
                                     "content": "Note image size：16*16"
                                 }
                             })
-        print(card_body)
+        logger.debug(card_body)
         return card_body

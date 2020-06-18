@@ -1,11 +1,11 @@
 # encoding: utf-8
-'''
+"""
 @author: liyao
 @contact: liyao2598330@126.com
 @software: pycharm
 @time: 2020/6/11 5:04 下午
 @desc:
-'''
+"""
 
 import logging.config
 
@@ -20,7 +20,7 @@ LOGGING = {
     },
     'handlers': {
         'default': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         }
@@ -37,7 +37,9 @@ LOGGING = {
 SUPPORT_LOG_LEVEL = ['ERROR', 'WARNING', 'INFO', 'WARN', 'DEBUG']
 
 
-def set_level(level):
+def set_log_level(level):
+    assert isinstance(level, str), level
+    level = str(level).upper()
     assert level in SUPPORT_LOG_LEVEL, 'wrong log level:%s' % level
     logger.setLevel(getattr(logging, level))
 
