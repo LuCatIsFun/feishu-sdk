@@ -4,3 +4,6 @@
 *.pyc
 __pycache__
 tests.py
+/build/
+/dist/
+/feishu_sdk.egg-info/
