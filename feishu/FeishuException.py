@@ -16,7 +16,7 @@ class FeishuException(Exception):
     """
 
     def __init__(self, status, data):
-        super().__init__()
+        super(FeishuException, self).__init__()
         self.__status = status
         self.__data = data
         self.args = (status, data)

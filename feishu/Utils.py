@@ -48,7 +48,10 @@ class Request:
 
     def response(self, url, data, method):
         url = "%s%s" % (self.BASE_API_SERVER, url)
-        data = bytes(json.dumps(data), encoding='utf8')
+        if sys.version_info.major == 2:
+            data = bytes(json.dumps(data)).encode(encoding='utf8')
+        else:
+            data = bytes(json.dumps(data), encoding='utf8')
 
         r = getattr(self.session, method)(url=url,
                                           headers=self.headers,
