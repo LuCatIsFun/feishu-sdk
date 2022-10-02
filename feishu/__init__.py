@@ -10,7 +10,7 @@
 __all__ = ('set_log_level', 'Bot')
 
 from .Logs import set_log_level
-from .Application import Bot
+from .Application import Bot,Bitable
 
 
 

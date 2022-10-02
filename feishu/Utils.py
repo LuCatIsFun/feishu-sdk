@@ -9,6 +9,7 @@
 import sys
 import json
 import requests
+import time
 
 from .Logs import logger
 from .FeishuException import RequestException
@@ -16,6 +17,52 @@ from .FeishuException import RequestException
 
 class FeishuBase:
     retry = 3
+    def __init__(self, app_id, app_secret, retry=None):
+
+        self.app_id = app_id
+        self.app_secret = app_secret
+
+        assert app_id is None or isinstance(app_id, str), app_id
+        assert app_secret is None or isinstance(app_secret, str), app_secret
+        assert (
+                retry is None
+                or isinstance(retry, int)
+                or isinstance(retry, urllib3.util.Retry)
+        )
+
+        self.request = Request(
+            retry=retry
+        )
+        # assert app_verification_token is None or isinstance(app_verification_token, str), app_verification_token
+    
+    def get_tenant_access_token(self):
+        """
+        租户TOKEN
+        :return:
+        """
+        url = "/auth/v3/tenant_access_token/internal/"
+        req_body = {
+            "app_id": self.app_id,
+            "app_secret": self.app_secret
+        }
+        self.request.tenant_access_token = self.request.get(url, req_body)
+        self.request.tenant_access_token['expire'] += time.time()
+        return self.request.tenant_access_token
+
+    def get_app_access_token(self):
+        """
+        APP TOKEN
+        :return:
+        """
+        url = "/auth/v3/app_access_token/internal/"
+        req_body = {
+            "app_id": self.app_id,
+            "app_secret": self.app_secret
+        }
+        self.request.app_access_token = self.request.get(url, req_body)
+        self.request.app_access_token['expire'] += time.time()
+        return self.request.app_access_token
+
 
 
 class Request(FeishuBase):
@@ -42,6 +89,9 @@ class Request(FeishuBase):
 
     def get(self, url, data):
         return self.response(url, data, 'get')
+
+    def put(self, url, data):
+        return self.response(url, data, 'put')
 
     def post(self, url, data=None):
         return self.response(url, data, 'post')

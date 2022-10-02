@@ -15,6 +15,26 @@ from .Logs import logger
 from .Utils import FeishuBase, Request
 from .Decorator import tenant_access_token, app_access_token
 
+class Bitable(FeishuBase):
+    @tenant_access_token
+    def add_record(self,app_token,table_id,fields):
+        url='/bitable/v1/apps/%s/tables/%s/records'%(app_token,table_id)
+        return self.request.post(url, data=fields)
+
+    @tenant_access_token
+    def search_records(self,app_token,table_id,filter):
+        url='/bitable/v1/apps/%s/tables/%s/records?filter=%s'%(app_token,table_id,filter)
+        return self.request.get(url, data=None)
+
+    @tenant_access_token
+    def update_record(self,app_token,table_id,record_id,fields):
+        url='/bitable/v1/apps/%s/tables/%s/records/%s'%(app_token,table_id,record_id)
+        return self.request.put(url, data=fields)
+
+    @tenant_access_token
+    def tables(self,user_open_id):
+        url='/bitable/v1/apps/%s/tables'%(user_open_id)
+        return self.request.get(url, data=None)
 
 class Bot(FeishuBase):
     MESSAGE_MAP = {
@@ -38,51 +58,6 @@ class Bot(FeishuBase):
     MESSAGE_BUTTON_CONFIRM = True
     MESSAGE_NOTICE_NAME = '通知'
 
-    def __init__(self, app_id, app_secret, retry=None):
-
-        self.app_id = app_id
-        self.app_secret = app_secret
-
-        assert app_id is None or isinstance(app_id, str), app_id
-        assert app_secret is None or isinstance(app_secret, str), app_secret
-        assert (
-                retry is None
-                or isinstance(retry, int)
-                or isinstance(retry, urllib3.util.Retry)
-        )
-
-        self.request = Request(
-            retry=retry
-        )
-        # assert app_verification_token is None or isinstance(app_verification_token, str), app_verification_token
-
-    def get_tenant_access_token(self):
-        """
-        租户TOKEN
-        :return:
-        """
-        url = "/auth/v3/tenant_access_token/internal/"
-        req_body = {
-            "app_id": self.app_id,
-            "app_secret": self.app_secret
-        }
-        self.request.tenant_access_token = self.request.get(url, req_body)
-        self.request.tenant_access_token['expire'] += time.time()
-        return self.request.tenant_access_token
-
-    def get_app_access_token(self):
-        """
-        APP TOKEN
-        :return:
-        """
-        url = "/auth/v3/app_access_token/internal/"
-        req_body = {
-            "app_id": self.app_id,
-            "app_secret": self.app_secret
-        }
-        self.request.app_access_token = self.request.get(url, req_body)
-        self.request.app_access_token['expire'] += time.time()
-        return self.request.app_access_token
 
     @tenant_access_token
     def send_user_message(self, user_open_id, text=None):
