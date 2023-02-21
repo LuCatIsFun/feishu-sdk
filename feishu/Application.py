@@ -8,6 +8,7 @@
 """
 import time
 import urllib3
+import json
 
 from datetime import datetime
 
@@ -63,12 +64,13 @@ class Bot(FeishuBase):
     def send_user_message(self, user_open_id, text=None):
         assert all([text]), 'At least one of "text" or "data" is not empty'
         url = "/im/v1/messages?receive_id_type=open_id"
+        content={
+            "text": text
+        }
         data = {
             "receive_id": user_open_id,
             "msg_type": "text",
-            "content": {
-                "text": text
-            }
+            "content":json.dumps(content)
         }
         return self.request.post(url, data=data)
 
