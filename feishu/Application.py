@@ -62,9 +62,9 @@ class Bot(FeishuBase):
     @tenant_access_token
     def send_user_message(self, user_open_id, text=None):
         assert all([text]), 'At least one of "text" or "data" is not empty'
-        url = "/message/v4/send/"
+        url = "/im/v1/messages?receive_id_type=open_id"
         data = {
-            "open_id": user_open_id,
+            "receive_id": user_open_id,
             "msg_type": "text",
             "content": {
                 "text": text
